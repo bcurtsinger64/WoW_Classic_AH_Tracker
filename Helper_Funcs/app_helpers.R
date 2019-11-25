@@ -1,7 +1,8 @@
 # Add new input data to existing data
-update_data = function(history, new_input_data) {
-  history <<- rbind(history, new_input_data)
-  data.table::fwrite(history, 'Data/material_hist.csv')
+update_data = function(history, new_input_data, file_out) {
+  history = rbind(history, new_input_data, use.names = FALSE)
+  data.table::fwrite(history, file_out)
+  return(history)
 }
 
 
@@ -22,7 +23,8 @@ insert_transaction_row = function() {
            column(2, textInput('quantity_sold', 'Quantity', '')),
            column(2, textInput('price_sold', 'Price', '')),
            column(2, textInput('desc_sold', 'Description', '')),
-           column(2, checkboxInput('ah_sold', 'Auction House Purchase', value = TRUE))
+           column(2, checkboxInput('ah_sold', 'Auction House Purchase', value = TRUE)),
+           column(2, actionButton('update_transactions', 'Add Transaction to History'))
+           )
            # TODO test checkbox
-  )
 }
